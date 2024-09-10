@@ -7,7 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-namespace ChristophWurst\Rector\Rector;
+namespace ChristophWurst\Nextcloud\Rector\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
