@@ -23,11 +23,6 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "Christophwurst\\Nextcloud\\Rector\\": "src/"
-        }
-    },
     "autoload-dev": {
         "psr-4": {
             "ChristophWurst\\Nextcloud\\Rector\\": "utils/rector/src",
