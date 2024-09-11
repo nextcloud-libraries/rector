@@ -7,7 +7,6 @@ use Rector\Php80\Rector\Class_\AnnotationToAttributeRector;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->importNames();
     $rectorConfig->ruleWithConfiguration(
         AnnotationToAttributeRector::class,
         [

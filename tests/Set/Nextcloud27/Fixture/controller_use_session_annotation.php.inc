@@ -19,15 +19,11 @@ class SomeController
 
 namespace ChristophWurst\Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
 
-use OCP\AppFramework\Http\Attribute\NoAdminRequired;
-use OCP\AppFramework\Http\Attribute\PublicPage;
-use OCP\AppFramework\Http\Attribute\NoCSRFRequired;
-
 class SomeController
 {
-    #[NoAdminRequired]
-    #[PublicPage]
-    #[NoCSRFRequired]
+    #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
+    #[\OCP\AppFramework\Http\Attribute\PublicPage]
+    #[\OCP\AppFramework\Http\Attribute\NoCSRFRequired]
     public function foo()
     {}
 }
