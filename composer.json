@@ -18,6 +18,7 @@
         "php": "^8.1"
     },
     "require-dev": {
+        "phpunit/phpunit": "^10.5",
         "ramsey/devtools": "^2.0",
         "rector/rector": "^1.2"
     },
@@ -25,12 +26,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "ChristophWurst\\Nextcloud\\Rector\\": "utils/rector/src"
+            "ChristophWurst\\Nextcloud\\Rector\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Christophwurst\\Test\\Nextcloud\\Rector\\": "tests/"
+            "Christophwurst\\Nextcloud\\Rector\\Test\\": "tests/"
         }
     },
     "config": {
