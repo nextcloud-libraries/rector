@@ -10,4 +10,8 @@
 
     <rule ref="Ramsey"/>
 
+    <rule ref="Generic.Commenting.Todo">
+    		<exclude-pattern>src/</exclude-pattern>
+    		<exclude-pattern>tests/</exclude-pattern>
+    	</rule>
 </ruleset>

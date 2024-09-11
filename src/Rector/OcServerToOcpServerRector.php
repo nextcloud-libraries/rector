@@ -7,7 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-only
  */
 
-namespace Christophwurst\Nextcloud\Rector\Rector;
+namespace ChristophWurst\Nextcloud\Rector\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -28,11 +28,11 @@ class OcServerToOcpServerRector extends AbstractRector
         return [MethodCall::class];
     }
 
-    /**
-     * @param MethodCall $node
-     */
     public function refactor(Node $node): ?Node
     {
+        if (!($node instanceof MethodCall)) {
+            return null;
+        }
         $methodCallName = $this->getName($node->name);
         if ($methodCallName === null) {
             return null;
