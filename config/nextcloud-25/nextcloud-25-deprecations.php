@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Christophwurst\Nextcloud\Rector\Rector\OcServerToOcpServerRector;
+use ChristophWurst\Nextcloud\Rector\Rector\OcServerToOcpServerRector;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {

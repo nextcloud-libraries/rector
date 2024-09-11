@@ -51,7 +51,7 @@ If you need to provide more detailed examples, use the `docs/` directory
 and provide a link here to the documentation.
 
 ``` php
-use Christophwurst\Nextcloud\Rector\Example;
+use ChristophWurst\Nextcloud\Rector\Example;
 
 $example = new Example();
 echo $example->greet('fellow human');
