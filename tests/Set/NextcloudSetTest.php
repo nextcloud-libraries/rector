@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Christophwurst\Nextcloud\Rector\Test\Set;
+namespace ChristophWurst\Nextcloud\Rector\Test\Set;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;

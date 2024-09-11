@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Christophwurst\Nextcloud\Rector\Test\Rector\OcpUtilAddScriptRector;
+namespace ChristophWurst\Nextcloud\Rector\Test\Rector\OcpUtilAddScriptRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
