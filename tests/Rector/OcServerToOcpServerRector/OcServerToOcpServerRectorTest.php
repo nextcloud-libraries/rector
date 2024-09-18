@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\OcServerToOcpServerRector;
+namespace Nextcloud\Rector\Test\Rector\OcServerToOcpServerRector;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;

@@ -7,7 +7,7 @@ declare(strict_types=1);
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace ChristophWurst\Nextcloud\Rector\Rector;
+namespace Nextcloud\Rector\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Expr\Variable;

@@ -1,5 +1,5 @@
 {
-    "name": "christophwurst/nextcloud-rector",
+    "name": "nextcloud/rector",
     "description": "Rector upgrade rules for Nextcloud",
     "license": "AGPL-3.0-or-later",
     "type": "library",
@@ -26,12 +26,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "ChristophWurst\\Nextcloud\\Rector\\": "src/"
+            "Nextcloud\\Rector\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "ChristophWurst\\Nextcloud\\Rector\\Test\\": "tests/"
+            "Nextcloud\\Rector\\Test\\": "tests/"
         }
     },
     "config": {

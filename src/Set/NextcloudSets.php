@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ChristophWurst\Nextcloud\Rector\Set;
+namespace Nextcloud\Rector\Set;
 
 use Rector\Set\Contract\SetListInterface;
 

@@ -7,7 +7,7 @@ abstract class Controller
 
 }
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
 
 class SomeClass extends \OCP\AppFramework\Controller
 {
@@ -26,7 +26,7 @@ abstract class Controller
 
 }
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
 
 class SomeClass extends \OCP\AppFramework\Controller
 {

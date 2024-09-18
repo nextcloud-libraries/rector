@@ -1,6 +1,6 @@
 <?php
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
+namespace Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
 
 class SomeController
 {
@@ -17,7 +17,7 @@ class SomeController
 -----
 <?php
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
+namespace Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
 
 class SomeController
 {
