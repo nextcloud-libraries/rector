@@ -14,8 +14,13 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use PhpParser\Node\Name\FullyQualified;
+use Rector\Application\Provider\CurrentFileProvider;
 use Rector\CodingStyle\Application\UseImportsAdder;
+use Rector\CodingStyle\ClassNameImport\ClassNameImportSkipper;
+use Rector\PostRector\Collector\UseNodesToAddCollector;
 use Rector\Rector\AbstractRector;
+use Rector\StaticTypeMapper\PhpParser\FullyQualifiedNodeMapper;
+use Rector\StaticTypeMapper\ValueObject\Type\FullyQualifiedObjectType;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -23,6 +28,10 @@ class OcServerToOcpServerRector extends AbstractRector
 {
     public function __construct(
         private UseImportsAdder $useImportsAdder,
+        private UseNodesToAddCollector $useNodesToAddCollector,
+        private FullyQualifiedNodeMapper $fullyQualifiedNodeMapper,
+        private ClassNameImportSkipper $classNameImportSkipper,
+        private CurrentFileProvider $currentFileProvider,
     ) {
     }
 
@@ -58,8 +67,34 @@ class OcServerToOcpServerRector extends AbstractRector
             return null;
         }
 
+        $class = $node->args[0]->value->class;
+        $serverClass = new FullyQualifiedObjectType('OCP\Server');
+        $serverClassNode = new FullyQualified('OCP\Server');
+        $file = $this->currentFileProvider->getFile();
+        if ($class !== null) {
+            $staticType = $this->fullyQualifiedNodeMapper->mapToPHPStan($class);
+            if (!$staticType instanceof FullyQualifiedObjectType) {
+                return null;
+            }
+            if (!$this->classNameImportSkipper->shouldSkipNameForFullyQualifiedObjectType($file, $class, $staticType)) {
+                $this->useNodesToAddCollector->addUseImport($staticType);
+                $node->args[0]->value->class = $staticType->getShortNameNode();
+            }
+        }
+        if (
+            !$this->classNameImportSkipper->shouldSkipNameForFullyQualifiedObjectType(
+                $file,
+                $serverClassNode,
+                $serverClass,
+            )
+        ) {
+            $this->useNodesToAddCollector->addUseImport($serverClass);
+            $serverClassNode = $serverClass->getShortNameNode();
+        }
+        $this->useNodesToAddCollector->addUseImport($serverClass);
+
         return new StaticCall(
-            new FullyQualified('OCP\Server'),
+            $serverClassNode,
             'get',
             $node->args,
         );
