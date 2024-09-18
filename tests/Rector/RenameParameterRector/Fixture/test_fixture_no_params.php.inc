@@ -4,10 +4,9 @@ namespace OCP\AppFramework;
 
 abstract class Controller
 {
-
 }
 
-namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameParameterRector\Fixture;
 
 class SomeClass extends \OCP\AppFramework\Controller
 {
@@ -23,10 +22,9 @@ namespace OCP\AppFramework;
 
 abstract class Controller
 {
-
 }
 
-namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameParameterRector\Fixture;
 
 class SomeClass extends \OCP\AppFramework\Controller
 {
