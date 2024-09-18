@@ -14,12 +14,18 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use PhpParser\Node\Name\FullyQualified;
+use Rector\CodingStyle\Application\UseImportsAdder;
 use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 class OcServerToOcpServerRector extends AbstractRector
 {
+    public function __construct(
+        private UseImportsAdder $useImportsAdder,
+    ) {
+    }
+
     /**
      * @return array<class-string<Node>>
      */
