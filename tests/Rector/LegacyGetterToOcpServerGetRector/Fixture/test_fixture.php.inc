@@ -10,6 +10,7 @@ class SomeClass
     {
         $request1 = OC::$server->getRequest();
         $request2 = \OC::$server->getRequest();
+        $contactManager = \OC::$server->getContactsManager();
     }
 }
 
@@ -27,6 +28,7 @@ class SomeClass
     {
         $request1 = \OCP\Server::get(\OCP\IRequest::class);
         $request2 = \OCP\Server::get(\OCP\IRequest::class);
+        $contactManager = \OCP\Server::get(\OCP\Contacts\IManager::class);
     }
 }
 
