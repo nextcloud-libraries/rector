@@ -11,6 +11,7 @@ return RectorConfig::configure()
     ->withConfiguredRule(
         LegacyGetterToOcpServerGetRector::class,
         [
+            /** @phpstan-ignore class.notFound */
             new LegacyGetterToOcpServerGet('getRequest', IRequest::class),
         ],
     );

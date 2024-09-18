@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use InvalidArgumentException;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
 use PHPStan\Type\ObjectType;
 use PhpParser\Node;
@@ -16,7 +17,6 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticPropertyFetch;
 use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Rector\AbstractRector;
-use RectorPrefix202409\Webmozart\Assert\Assert;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
@@ -51,11 +51,11 @@ CODE_SAMPLE
         return [MethodCall::class];
     }
 
-    /**
-     * @param MethodCall $node
-     */
     public function refactor(Node $node): ?Node
     {
+        if (!($node instanceof MethodCall)) {
+            return null;
+        }
         foreach ($this->legacyGetterToOcpServerGet as $config) {
             if (!$node->var instanceof StaticPropertyFetch) {
                 continue;
@@ -85,7 +85,15 @@ CODE_SAMPLE
      */
     public function configure(array $configuration): void
     {
-        Assert::allIsAOf($configuration, LegacyGetterToOcpServerGet::class);
+        foreach ($configuration as $config) {
+            if (!$config instanceof LegacyGetterToOcpServerGet) {
+                throw new InvalidArgumentException('Only supports LegacyGetterToOcpServerGet configurations');
+            }
+        }
+        /**
+         * @psalm-suppress MixedPropertyTypeCoercion
+         * @phpstan-ignore assign.propertyType
+         */
         $this->legacyGetterToOcpServerGet = $configuration;
     }
 }
