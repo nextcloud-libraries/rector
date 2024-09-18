@@ -5,7 +5,7 @@ namespace OCP\Settings;
 interface ISettings {
 }
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
 
 class SomeClass implements \OCP\Settings\ISettings
 {
@@ -22,7 +22,7 @@ namespace OCP\Settings;
 interface ISettings {
 }
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
 
 class SomeClass implements \OCP\Settings\ISettings
 {

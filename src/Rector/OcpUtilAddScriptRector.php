@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace ChristophWurst\Nextcloud\Rector\Rector;
+namespace Nextcloud\Rector\Rector;
 
 use PhpParser\Node;
 use PhpParser\Node\Arg;

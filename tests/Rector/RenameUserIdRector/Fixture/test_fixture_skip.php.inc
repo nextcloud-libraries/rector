@@ -1,6 +1,6 @@
 <?php
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
 
 class SomeClass
 {
@@ -12,7 +12,7 @@ class SomeClass
 -----
 <?php
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
+namespace Nextcloud\Rector\Test\Rector\RenameUserIdRector\Fixture;
 
 class SomeClass
 {

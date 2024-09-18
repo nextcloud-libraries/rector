@@ -1,6 +1,6 @@
 <?php
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Set\Fixture;
+namespace Nextcloud\Rector\Test\Set\Fixture;
 
 use OC;
 use OCP\IRequest;
@@ -20,7 +20,7 @@ class SomeClass
 -----
 <?php
 
-namespace ChristophWurst\Nextcloud\Rector\Test\Set\Fixture;
+namespace Nextcloud\Rector\Test\Set\Fixture;
 
 use OC;
 use OCP\IRequest;
