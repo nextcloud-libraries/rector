@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 use Nextcloud\Rector\Rector\LegacyGetterToOcpServerGetRector;
 use Nextcloud\Rector\Rector\OcServerToOcpServerRector;
+use Nextcloud\Rector\Rector\OcpUtilAddScriptRector;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rules([
         OcServerToOcpServerRector::class,
+        OcpUtilAddScriptRector::class,
     ]);
     $rectorConfig->ruleWithConfiguration(
         LegacyGetterToOcpServerGetRector::class,
