@@ -29,6 +29,9 @@ First generate a rector.php configuration by running `process` command a first t
 
 We recommend that you first run rector with an empty configuration, commit the result, and then add the sets from Nextcloud
  and PHP one by one and commit the rule along with its result each time.
+You should stop at the oldest version your application is supporting of both Nextcloud and PHP.
+Do not apply a newer set or you might lose compatibility.
+Each Nextcloud set includes the older ones so you only need one of them in your configuration.
 You could end up with a configuration like this one:
 
 ``` php
