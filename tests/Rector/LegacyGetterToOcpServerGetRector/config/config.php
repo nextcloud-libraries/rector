@@ -13,5 +13,6 @@ return RectorConfig::configure()
         [
             /** @phpstan-ignore class.notFound */
             new LegacyGetterToOcpServerGet('getRequest', IRequest::class),
+            new LegacyGetterToOcpServerGet('getContactsManager', 'OCP\Contacts\IManager'),
         ],
     );
