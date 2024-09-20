@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use InvalidArgumentException;
 use Nextcloud\Rector\ValueObject\RenameParameter;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
@@ -25,7 +26,6 @@ use Rector\Reflection\ReflectionResolver;
 use Rector\ValueObject\MethodName;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
-use Webmozart\Assert\Assert;
 
 use function count;
 use function is_array;
@@ -60,7 +60,9 @@ class RenameParameterRector extends AbstractRector implements ConfigurableRector
     public function configure(array $configuration): void
     {
         foreach ($configuration as $renameParameter) {
-            Assert::isInstanceOf($renameParameter, RenameParameter::class);
+            if (!$renameParameter instanceof RenameParameter) {
+                throw new InvalidArgumentException('Only supports RenameParameter configurations');
+            }
             $this->renameParameters[] = $renameParameter;
         }
     }
