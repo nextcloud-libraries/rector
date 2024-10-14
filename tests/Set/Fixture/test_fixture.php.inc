@@ -3,6 +3,9 @@
 namespace Nextcloud\Rector\Test\Set\Fixture;
 
 use OC;
+use OCP\BackgroundJob\IJob;
+use OCP\BackgroundJob\IJobList;
+use OCP\ILogger;
 use OCP\IRequest;
 
 class SomeClass
@@ -17,6 +20,11 @@ class SomeClass
         $request5 = \OC::$server->getRequest();
         $contactManager = \OC::$server->getContactsManager();
     }
+
+    public function runJob(IJob $job, IJobList $jobList, ?ILogger $logger)
+    {
+        $job->execute($jobList, $logger);
+    }
 }
 
 ?>
@@ -26,6 +34,9 @@ class SomeClass
 namespace Nextcloud\Rector\Test\Set\Fixture;
 
 use OC;
+use OCP\BackgroundJob\IJob;
+use OCP\BackgroundJob\IJobList;
+use OCP\ILogger;
 use OCP\IRequest;
 
 class SomeClass
@@ -39,6 +50,11 @@ class SomeClass
         $request4 = \OCP\Server::get(\OCP\IRequest::class);
         $request5 = \OCP\Server::get(\OCP\IRequest::class);
         $contactManager = \OCP\Server::get(\OCP\Contacts\IManager::class);
+    }
+
+    public function runJob(IJob $job, IJobList $jobList, ?ILogger $logger)
+    {
+        $job->start($jobList);
     }
 }
 
