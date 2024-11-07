@@ -21,6 +21,16 @@ final class NextcloudClassNameImportTest extends AbstractRectorTestCase
         $this->doTestFile($filePath);
     }
 
+    /**
+     * @param string[] $configFiles
+     */
+    protected function bootFromConfigFiles(array $configFiles): void
+    {
+        /* Did not find a cleaner way to make sure the registered service is taken into account */
+        self::getContainer()->forgetInstances();
+        parent::bootFromConfigFiles($configFiles);
+    }
+
     public static function provideData(): Iterator
     {
         return self::yieldFilesFromDirectory(__DIR__ . '/Fixture');

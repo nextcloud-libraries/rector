@@ -24,10 +24,10 @@ class SomeClass
 
 namespace Nextcloud\Rector\Test\ClassNameImport\Fixture;
 
-use OCP\Authentication\TwoFactorAuth;
 use OCP\IRequest;
 use OCP\Server;
 use OCA\My\CustomClass;
+use OCP\Authentication\TwoFactorAuth;
 
 class SomeClass
 {
