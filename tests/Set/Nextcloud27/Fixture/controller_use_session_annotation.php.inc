@@ -5,10 +5,10 @@ namespace Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
 class SomeController
 {
     /**
-     * @AnonRateLimit
-     * @ARateLimit
-     * @AuthorizedAdminSetting
-     * @BruteForceProtection
+     * @AnonRateThrottle(limit=10, period=100)
+     * @UserRateThrottle(limit=20, period=200)
+     * @AuthorizedAdminSetting(settings=OCA\NotesTutorial\Settings\NotesAdmin;OCA\NotesTutorial\Settings\NotesSubAdmin)
+     * @BruteForceProtection(action=login)
      * @CORS
      * @NoAdminRequired
      * @NoCSRFRequired
@@ -16,7 +16,6 @@ class SomeController
      * @PublicPage
      * @StrictCookiesRequired
      * @SubAdminRequired
-     * @UserRateLimit
      */
     public function foo()
     {}
@@ -30,10 +29,11 @@ namespace Nextcloud\Rector\Test\Set\Nextcloud27\Fixture;
 
 class SomeController
 {
-    #[\OCP\AppFramework\Http\Attribute\AnonRateLimit]
-    #[\OCP\AppFramework\Http\Attribute\ARateLimit]
-    #[\OCP\AppFramework\Http\Attribute\AuthorizedAdminSetting]
-    #[\OCP\AppFramework\Http\Attribute\BruteForceProtection]
+    #[\OCP\AppFramework\Http\Attribute\AnonRateLimit(limit: 10, period: 100)]
+    #[\OCP\AppFramework\Http\Attribute\UserRateLimit(limit: 20, period: 200)]
+    #[\OCP\AppFramework\Http\Attribute\AuthorizedAdminSetting(settings: 'OCA\NotesTutorial\Settings\NotesAdmin')]
+    #[\OCP\AppFramework\Http\Attribute\AuthorizedAdminSetting(settings: 'OCA\NotesTutorial\Settings\NotesSubAdmin')]
+    #[\OCP\AppFramework\Http\Attribute\BruteForceProtection(action: 'login')]
     #[\OCP\AppFramework\Http\Attribute\CORS]
     #[\OCP\AppFramework\Http\Attribute\NoAdminRequired]
     #[\OCP\AppFramework\Http\Attribute\NoCSRFRequired]
@@ -41,7 +41,6 @@ class SomeController
     #[\OCP\AppFramework\Http\Attribute\PublicPage]
     #[\OCP\AppFramework\Http\Attribute\StrictCookiesRequired]
     #[\OCP\AppFramework\Http\Attribute\SubAdminRequired]
-    #[\OCP\AppFramework\Http\Attribute\UserRateLimit]
     public function foo()
     {}
 }
