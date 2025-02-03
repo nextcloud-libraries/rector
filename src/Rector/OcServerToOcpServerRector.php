@@ -62,7 +62,7 @@ class OcServerToOcpServerRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Change method calls from OC::$server to OCP\Server::get.',
+            'Change method calls from OC::$server->get and OC::$server->query to OCP\Server::get.',
             [
                 new CodeSample(
                     '\OC::$server->get(IAppConfig::class);',
