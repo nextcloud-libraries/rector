@@ -33,7 +33,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.31.1"
         with:
-          php-version: "latest"
+          php-version: "8.3"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -56,7 +56,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.31.1"
         with:
-          php-version: "latest"
+          php-version: "8.3"
           coverage: "none"
           ini-values: "memory_limit=-1"
 
@@ -87,7 +87,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.31.1"
         with:
-          php-version: "latest"
+          php-version: "8.3"
           coverage: "none"
 
       - name: "Install dependencies (Composer)"
@@ -113,7 +113,7 @@ jobs:
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.31.1"
         with:
-          php-version: "latest"
+          php-version: "8.3"
           coverage: "pcov"
           ini-values: "memory_limit=-1"
 
