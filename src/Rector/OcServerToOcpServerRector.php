@@ -39,7 +39,7 @@ class OcServerToOcpServerRector extends AbstractRector
         }
 
         if (
-            $methodCallName !== 'get'
+            ($methodCallName !== 'get' && $methodCallName !== 'query')
             || !($node->var instanceof StaticPropertyFetch)
         ) {
             return null;
@@ -62,7 +62,7 @@ class OcServerToOcpServerRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Change method calls from set* to change*.',
+            'Change method calls from OC::$server->get and OC::$server->query to OCP\Server::get.',
             [
                 new CodeSample(
                     '\OC::$server->get(IAppConfig::class);',
