@@ -47,9 +47,9 @@ return static function (RectorConfig $rectorConfig): void {
             // Deprecated since 20.0.0
             new LegacyGetterToOcpServerGet('getLazyRootFolder', 'OCP\Files\IRootFolder'),
             // Deprecated since 20.0.0
-            new LegacyGetterToOcpServerGet('getUserManager', 'OCP\User\IManager'),
+            new LegacyGetterToOcpServerGet('getUserManager', 'OCP\IUserManager'),
             // Deprecated since 20.0.0
-            new LegacyGetterToOcpServerGet('getGroupManager', 'OCP\Group\IManager'),
+            new LegacyGetterToOcpServerGet('getGroupManager', 'OCP\IGroupManager'),
             // Deprecated since 20.0.0
             new LegacyGetterToOcpServerGet('getUserSession', 'OCP\IUserSession'),
             // Deprecated since 20.0.0
