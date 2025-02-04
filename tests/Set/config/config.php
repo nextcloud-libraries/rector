@@ -7,5 +7,5 @@ use Rector\Config\RectorConfig;
 
 return RectorConfig::configure()
     ->withSets([
-        NextcloudSets::NEXTCLOUD_26,
+        NextcloudSets::NEXTCLOUD_25,
     ]);
