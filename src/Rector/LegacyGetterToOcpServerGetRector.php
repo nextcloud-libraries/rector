@@ -56,17 +56,17 @@ CODE_SAMPLE
         if (!($node instanceof MethodCall)) {
             return null;
         }
+        if (!$node->var instanceof StaticPropertyFetch) {
+            return null;
+        }
+        if (!$this->isName($node->var->name, 'server')) {
+            return null;
+        }
+        if (!$this->isObjectType($node->var->class, new ObjectType('OC'))) {
+            return null;
+        }
         foreach ($this->legacyGetterToOcpServerGet as $config) {
-            if (!$node->var instanceof StaticPropertyFetch) {
-                continue;
-            }
-            if (!$this->isName($node->var->name, 'server')) {
-                continue;
-            }
             if (!$this->isName($node->name, $config->getOldMethod())) {
-                continue;
-            }
-            if (!$this->isObjectType($node->var->class, new ObjectType('OC'))) {
                 continue;
             }
 
