@@ -69,12 +69,29 @@ CODE_SAMPLE
             if (!$this->isName($node->name, $config->getOldMethod())) {
                 continue;
             }
+            $factoryMethod = $config->getFactoryMethod();
+            if ($factoryMethod === null) {
+                if ($node->args !== []) {
+                    /* Skip if there are parameters to the call as they would be lost by the migration */
+                    return null;
+                }
 
-            return $this->nodeFactory->createStaticCall(
-                'OCP\Server',
-                'get',
-                [$this->nodeFactory->createClassConstReference($config->getNewClass())],
-            );
+                return $this->nodeFactory->createStaticCall(
+                    'OCP\Server',
+                    'get',
+                    [$this->nodeFactory->createClassConstReference($config->getNewClass())],
+                );
+            } else {
+                return $this->nodeFactory->createMethodCall(
+                    $this->nodeFactory->createStaticCall(
+                        'OCP\Server',
+                        'get',
+                        [$this->nodeFactory->createClassConstReference($config->getNewClass())],
+                    ),
+                    $factoryMethod,
+                    $node->args,
+                );
+            }
         }
 
         return null;

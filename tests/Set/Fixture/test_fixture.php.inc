@@ -16,6 +16,7 @@ class SomeClass
         $request4 = OC::$server->getRequest();
         $request5 = \OC::$server->getRequest();
         $contactManager = \OC::$server->getContactsManager();
+        $deckAppDirectory = \OC::$server->getAppDataDir('deck');
     }
 }
 
@@ -39,6 +40,7 @@ class SomeClass
         $request4 = \OCP\Server::get(\OCP\IRequest::class);
         $request5 = \OCP\Server::get(\OCP\IRequest::class);
         $contactManager = \OCP\Server::get(\OCP\Contacts\IManager::class);
+        $deckAppDirectory = \OCP\Server::get(\OCP\Files\AppData\IAppDataFactory::class)->get('deck');
     }
 }
 

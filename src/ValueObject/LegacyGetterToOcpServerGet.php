@@ -16,6 +16,7 @@ final class LegacyGetterToOcpServerGet
     public function __construct(
         private string $oldMethod,
         private string $newClass,
+        private ?string $factoryMethod = null,
     ) {
         RectorAssert::className($oldMethod);
         RectorAssert::className($newClass);
@@ -29,5 +30,10 @@ final class LegacyGetterToOcpServerGet
     public function getNewClass(): string
     {
         return $this->newClass;
+    }
+
+    public function getFactoryMethod(): ?string
+    {
+        return $this->factoryMethod;
     }
 }
