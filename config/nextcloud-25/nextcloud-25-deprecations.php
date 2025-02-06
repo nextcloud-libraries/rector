@@ -173,7 +173,7 @@ return static function (RectorConfig $rectorConfig): void {
             // Deprecated since 20.0.0
             new LegacyGetterToOcpServerGet('getSettingsManager', 'OCP\Settings\IManager'),
             // Deprecated since 20.0.0 Use 'get(\OCP\Files\AppData\IAppDataFactory')->get($app) instead
-            new LegacyGetterToOcpServerGet('getAppDataDir', 'OCP\Files\IAppData'),
+            new LegacyGetterToOcpServerGet('getAppDataDir', 'OCP\Files\AppData\IAppDataFactory', 'get'),
             // Deprecated since 20.0.0
             new LegacyGetterToOcpServerGet('getLockdownManager', 'OCP\Lockdown\ILockdownManager'),
             // Deprecated since 20.0.0

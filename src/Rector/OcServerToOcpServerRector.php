@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
@@ -33,22 +34,19 @@ class OcServerToOcpServerRector extends AbstractRector
         if (!($node instanceof MethodCall)) {
             return null;
         }
-        $methodCallName = $this->getName($node->name);
-        if ($methodCallName === null) {
+        if (!$node->var instanceof StaticPropertyFetch) {
+            return null;
+        }
+        if (!$this->isName($node->var->name, 'server')) {
             return null;
         }
 
-        if (
-            ($methodCallName !== 'get' && $methodCallName !== 'query')
-            || !($node->var instanceof StaticPropertyFetch)
-        ) {
+        $methodCallName = $this->getName($node->name);
+        if ($methodCallName !== 'get' && $methodCallName !== 'query') {
             return null;
         }
-        $class = $node->var->class;
-        if (
-            !($class instanceof FullyQualified)
-            || $class->getParts() !== ['OC']
-        ) {
+
+        if (!$this->isObjectType($node->var->class, new ObjectType('OC'))) {
             return null;
         }
 
