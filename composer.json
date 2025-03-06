@@ -16,6 +16,7 @@
     ],
     "require": {
         "php": "^8.1",
+        "nextcloud/ocp": "*",
         "rector/rector": "^2.0"
     },
     "require-dev": {
@@ -26,7 +27,8 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Nextcloud\\Rector\\": "src/"
+            "Nextcloud\\Rector\\": "src/",
+            "OCP\\": "vendor/nextcloud/ocp/OCP"
         }
     },
     "autoload-dev": {
