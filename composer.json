@@ -16,7 +16,7 @@
     ],
     "require": {
         "php": "^8.1",
-        "nextcloud/ocp": "*",
+        "nextcloud/ocp": ">=27",
         "rector/rector": "^2.0"
     },
     "require-dev": {
