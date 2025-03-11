@@ -45,9 +45,9 @@ use Rector\PhpDocParser\PhpDocParser\PhpDocNodeTraverser;
 use Rector\Rector\AbstractRector;
 use Rector\ValueObject\PhpVersionFeature;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
-use RectorPrefix202503\Webmozart\Assert\Assert;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
+use Webmozart\Assert\Assert;
 
 use function array_merge;
 use function sprintf;
@@ -55,6 +55,7 @@ use function strpos;
 use function strtolower;
 use function trim;
 
+/** @psalm-suppress PropertyNotSetInConstructor */
 final class AnnotationToAttributeRector extends AbstractRector implements
     ConfigurableRectorInterface,
     MinPhpVersionInterface
@@ -120,6 +121,8 @@ CODE_SAMPLE
 
     /**
      * @param Class_|Property|Param|ClassMethod|Function_|Closure|ArrowFunction|Interface_ $node
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function refactor(Node $node): ?Node
     {
@@ -148,7 +151,9 @@ CODE_SAMPLE
     }
 
     /**
-     * @param mixed[] $configuration
+     * @param array<object> $configuration
+     *
+     * @psalm-suppress MoreSpecificImplementedParamType
      */
     public function configure(array $configuration): void
     {
@@ -156,6 +161,9 @@ CODE_SAMPLE
         $this->annotationsToAttributes = $configuration;
     }
 
+    /**
+     * @return PhpVersionFeature::ATTRIBUTES
+     */
     public function provideMinPhpVersion(): int
     {
         return PhpVersionFeature::ATTRIBUTES;
