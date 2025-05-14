@@ -7,12 +7,22 @@ use Nextcloud\Rector\Rector\OcServerToOcpServerRector;
 use Nextcloud\Rector\Rector\OcpUtilAddScriptRector;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
 use Rector\Config\RectorConfig;
+use Rector\Renaming\Rector\StaticCall\RenameStaticMethodRector;
+use Rector\Renaming\ValueObject\RenameStaticMethod;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rules([
         OcServerToOcpServerRector::class,
         OcpUtilAddScriptRector::class,
     ]);
+
+    $rectorConfig->ruleWithConfiguration(RenameStaticMethodRector::class, [
+        // Deprecated since 4.0.0
+        new RenameStaticMethod('OC_Helper', 'computerFileSize', 'OCP\Util', 'computerFileSize'),
+        // Deprecated since 4.0.0
+        new RenameStaticMethod('OC_Helper', 'humanFileSize', 'OCP\Util', 'humanFileSize'),
+    ]);
+
     $rectorConfig->ruleWithConfiguration(
         LegacyGetterToOcpServerGetRector::class,
         [
