@@ -12,4 +12,7 @@ final class NextcloudSets
     public const NEXTCLOUD_28 = self::NEXTCLOUD_27;
     public const NEXTCLOUD_29 = self::NEXTCLOUD_27;
     public const NEXTCLOUD_30 = self::NEXTCLOUD_27;
+    public const NEXTCLOUD_31 = self::NEXTCLOUD_27;
+    public const NEXTCLOUD_32 = self::NEXTCLOUD_27;
+    public const NEXTCLOUD_33 = __DIR__ . '/../../config/nextcloud-33/nextcloud-33-deprecations.php';
 }

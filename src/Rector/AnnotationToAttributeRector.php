@@ -191,7 +191,7 @@ CODE_SAMPLE
                 }
                 $tag = trim($docNode->name, '@');
                 // not a basic one
-                if (strpos($tag, '\\') !== \false) {
+                if (strpos($tag, '\\') !== false) {
                     return null;
                 }
                 foreach ($this->annotationsToAttributes as $annotationToAttribute) {
