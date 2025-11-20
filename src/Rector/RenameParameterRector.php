@@ -103,12 +103,12 @@ class RenameParameterRector extends AbstractRector implements ConfigurableRector
             return null;
         }
 
-        $hasChanged = \false;
+        $hasChanged = false;
 
         foreach ($this->renameParameters as $renameParameter) {
             foreach ($params as $param) {
                 if ($this->renameVariable($param->var, $renameParameter)) {
-                    $hasChanged = \true;
+                    $hasChanged = true;
                 }
             }
         }
