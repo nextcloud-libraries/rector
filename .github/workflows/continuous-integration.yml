@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5.0.0"
+        uses: "actions/checkout@v6.0.0"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.35.5"
@@ -51,7 +51,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5.0.0"
+        uses: "actions/checkout@v6.0.0"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.35.5"
@@ -82,7 +82,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5.0.0"
+        uses: "actions/checkout@v6.0.0"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.35.5"
@@ -108,7 +108,7 @@ jobs:
 
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v5.0.0"
+        uses: "actions/checkout@v6.0.0"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.35.5"
@@ -167,7 +167,7 @@ jobs:
           git config --system core.eol lf
 
       - name: "Checkout repository"
-        uses: "actions/checkout@v5.0.0"
+        uses: "actions/checkout@v6.0.0"
 
       - name: "Install PHP"
         uses: "shivammathur/setup-php@2.35.5"
