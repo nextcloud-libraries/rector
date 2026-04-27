@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use Override;
 use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -19,16 +20,18 @@ use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-class OcServerToOcpServerRector extends AbstractRector
+final class OcServerToOcpServerRector extends AbstractRector
 {
     /**
      * @return array<class-string<Node>>
      */
+    #[Override]
     public function getNodeTypes(): array
     {
         return [MethodCall::class];
     }
 
+    #[Override]
     public function refactor(Node $node): ?Node
     {
         if (!($node instanceof MethodCall)) {

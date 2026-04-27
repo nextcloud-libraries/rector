@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use Override;
 use PHPStan\PhpDocParser\Ast\Node as DocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -111,6 +112,7 @@ CODE_SAMPLE
     /**
      * @return array<class-string<Node>>
      */
+    #[Override]
     public function getNodeTypes(): array
     {
         return [
@@ -124,6 +126,7 @@ CODE_SAMPLE
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
+    #[Override]
     public function refactor(Node $node): ?Node
     {
         if ($this->annotationsToAttributes === []) {
@@ -155,6 +158,7 @@ CODE_SAMPLE
      *
      * @psalm-suppress MoreSpecificImplementedParamType
      */
+    #[Override]
     public function configure(array $configuration): void
     {
         Assert::allIsAOf($configuration, AnnotationToAttribute::class);
@@ -164,6 +168,7 @@ CODE_SAMPLE
     /**
      * @return PhpVersionFeature::ATTRIBUTES
      */
+    #[Override]
     public function provideMinPhpVersion(): int
     {
         return PhpVersionFeature::ATTRIBUTES;

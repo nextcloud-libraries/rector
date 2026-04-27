@@ -10,6 +10,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use Override;
 use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
@@ -68,11 +69,13 @@ CODE_SAMPLE,
     /**
      * @return array<class-string<Node>>
      */
+    #[Override]
     public function getNodeTypes(): array
     {
         return [MethodCall::class];
     }
 
+    #[Override]
     public function refactor(Node $node): ?Node
     {
         if (!($node instanceof MethodCall)) {

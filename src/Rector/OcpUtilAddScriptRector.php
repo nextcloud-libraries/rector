@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\Rector;
 
+use Override;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr\FuncCall;
@@ -16,16 +17,18 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
 
-class OcpUtilAddScriptRector extends AbstractRector
+final class OcpUtilAddScriptRector extends AbstractRector
 {
     /**
      * @return array<class-string<Node>>
      */
+    #[Override]
     public function getNodeTypes(): array
     {
         return [FuncCall::class];
     }
 
+    #[Override]
     public function refactor(Node $node): ?Node
     {
         if (!($node instanceof FuncCall)) {
