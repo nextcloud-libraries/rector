@@ -13,7 +13,7 @@ use Override;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\CodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-final class ReplaceIConfigWithIAppConfigRector extends AReplaceClassRector
+final class ReplaceIConfigWithIUserConfigRector extends AReplaceClassRector
 {
     #[Override]
     public function getOldClassName(): string
@@ -24,24 +24,28 @@ final class ReplaceIConfigWithIAppConfigRector extends AReplaceClassRector
     #[Override]
     public function getNewClassName(): string
     {
-        return 'OCP\IAppConfig';
+        return 'OCP\IUserConfig';
     }
 
     #[Override]
     public function getDesiredVarName(): string
     {
-        return 'appConfig';
+        return 'userConfig';
     }
 
     #[Override]
     public function getMethodMap(): array
     {
         return [
-            'getAppValue' => 'getValue',
-            'getAppKeys' => 'getKeys',
-            'setAppValue' => 'setValue',
-            'deleteAppValue' => 'deleteKey',
-            'deleteAppValues' => 'deleteApp',
+            'getAllUserValues' => 'getAllValues',
+            'getUserKeys' => 'getKeys',
+            'getUserValue' => 'getValueString',
+            'getUserValueForUsers' => 'getValuesByUsers',
+            'getUsersForUserValue' => 'searchUsersByValueString',
+            'setUserValue' => 'setValueString',
+            'deleteUserValue' => 'deleteUserConfig',
+            'deleteAllUserValues' => 'deleteAllUserConfig',
+            'deleteAppFromAllUsers' => 'deleteApp',
         ];
     }
 
@@ -49,8 +53,8 @@ final class ReplaceIConfigWithIAppConfigRector extends AReplaceClassRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Replace deprecated \OCP\IConfig app-config methods with their \OCP\IAppConfig counterparts,'
-            . ' injecting IAppConfig alongside the existing IConfig.',
+            'Replace deprecated \OCP\IConfig user-config methods with their \OCP\IUserConfig counterparts,'
+            . ' injecting IUserConfig alongside the existing IConfig.',
             [
                 new CodeSample(
                     <<<'CODE_SAMPLE'
@@ -62,21 +66,21 @@ class SomeClass
 
     public function run(): string
     {
-        return $this->config->getAppValue('myapp', 'mykey', 'default');
+        return $this->config->getUserValue('user', 'myapp', 'mykey', 'default');
     }
 }
 CODE_SAMPLE,
                     <<<'CODE_SAMPLE'
-use OCP\IAppConfig;
 use OCP\IConfig;
+use OCP\IUserConfig;
 
 class SomeClass
 {
-    public function __construct(private IConfig $config, private IAppConfig $appConfig) {}
+    public function __construct(private IConfig $config, private IUserConfig $userConfig) {}
 
     public function run(): string
     {
-        return $this->appConfig->getValueString('myapp', 'mykey', 'default');
+        return $this->userConfig->getValueString('user', 'myapp', 'mykey', 'default');
     }
 }
 CODE_SAMPLE,
