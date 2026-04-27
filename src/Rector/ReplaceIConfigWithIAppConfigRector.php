@@ -191,12 +191,9 @@ CODE_SAMPLE,
                     if (!$this->isName($propertyFetch->var, 'this')) {
                         return null;
                     }
-                    foreach ($propertyNames as $propertyName) {
-                        if ($this->isName($propertyFetch->name, $propertyName)) {
-                            $calls[] = $subNode;
 
-                            break;
-                        }
+                    if ($this->isNames($propertyFetch->name, $propertyNames)) {
+                        $calls[] = $subNode;
                     }
 
                     return null;
