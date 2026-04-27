@@ -11,7 +11,7 @@ use Rector\Config\RectorConfig;
 use Rector\Php80\ValueObject\AnnotationToAttribute;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->sets([NextcloudSets::NEXTCLOUD_29]);
+    $rectorConfig->sets([NextcloudSets::NEXTCLOUD_32]);
     $rectorConfig->rule(ReplaceFetchAllMethodCallRector::class);
     $rectorConfig->ruleWithConfiguration(
         ReplaceInjectedMethodCallRector::class,
