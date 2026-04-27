@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace Nextcloud\Rector\ClassNameImport;
 
+use Override;
 use PhpParser\Node;
 use Rector\CodingStyle\Contract\ClassNameImport\ClassNameImportSkipVoterInterface;
 use Rector\StaticTypeMapper\ValueObject\Type\FullyQualifiedObjectType;
@@ -24,7 +25,7 @@ use function str_starts_with;
  * $config = RectorConfig::configure()[…]->withImportNames(importShortClasses:false);
  * $config->registerService(NextcloudNamespaceSkipVoter::class, tag:ClassNameImportSkipVoterInterface::class);
  */
-class NextcloudNamespaceSkipVoter implements ClassNameImportSkipVoterInterface
+final class NextcloudNamespaceSkipVoter implements ClassNameImportSkipVoterInterface
 {
     /**
      * @var list<string>
@@ -48,6 +49,7 @@ class NextcloudNamespaceSkipVoter implements ClassNameImportSkipVoterInterface
         'Provider',
     ];
 
+    #[Override]
     public function shouldSkip(File $file, FullyQualifiedObjectType $fullyQualifiedObjectType, Node $node): bool
     {
         if (in_array($fullyQualifiedObjectType->getShortName(), $this->skippedClassNames)) {

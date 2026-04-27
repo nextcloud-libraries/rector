@@ -11,6 +11,7 @@ namespace Nextcloud\Rector\Rector;
 
 use InvalidArgumentException;
 use Nextcloud\Rector\ValueObject\RenameParameter;
+use Override;
 use PhpParser\Node;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Assign;
@@ -31,7 +32,7 @@ use function count;
 use function is_array;
 
 /** @psalm-suppress PropertyNotSetInConstructor */
-class RenameParameterRector extends AbstractRector implements ConfigurableRectorInterface
+final class RenameParameterRector extends AbstractRector implements ConfigurableRectorInterface
 {
     /** @var RenameParameter[] */
     private array $renameParameters = [];
@@ -57,6 +58,7 @@ class RenameParameterRector extends AbstractRector implements ConfigurableRector
     /**
      * @param mixed[] $configuration
      */
+    #[Override]
     public function configure(array $configuration): void
     {
         foreach ($configuration as $renameParameter) {
@@ -70,11 +72,13 @@ class RenameParameterRector extends AbstractRector implements ConfigurableRector
     /**
      * @return array<class-string<Node>>
      */
+    #[Override]
     public function getNodeTypes(): array
     {
         return [Class_::class];
     }
 
+    #[Override]
     public function refactor(Node $node): ?Node
     {
         if (!($node instanceof Class_)) {

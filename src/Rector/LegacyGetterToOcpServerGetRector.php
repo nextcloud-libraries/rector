@@ -11,6 +11,7 @@ namespace Nextcloud\Rector\Rector;
 
 use InvalidArgumentException;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
+use Override;
 use PHPStan\Type\ObjectType;
 use PhpParser\Node;
 use PhpParser\Node\Expr\MethodCall;
@@ -46,11 +47,13 @@ CODE_SAMPLE
     /**
      * @return array<class-string<Node>>
      */
+    #[Override]
     public function getNodeTypes(): array
     {
         return [MethodCall::class];
     }
 
+    #[Override]
     public function refactor(Node $node): ?Node
     {
         if (!($node instanceof MethodCall)) {
@@ -100,6 +103,7 @@ CODE_SAMPLE
     /**
      * @param mixed[] $configuration
      */
+    #[Override]
     public function configure(array $configuration): void
     {
         foreach ($configuration as $config) {
