@@ -5,14 +5,13 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace Nextcloud\Rector\Test\Rector\ReplaceIConfigWithIAppConfigRector\Fixture;
+namespace Nextcloud\Rector\Test\Set\Nextcloud29\Fixture;
 
-use OCP\AppFramework\Services\IAppConfig;
 use OCP\IConfig;
 
 class SomeClass
 {
-    public function __construct(private IConfig $config, private IAppConfig $appConfig)
+    public function __construct(private IConfig $config)
     {
     }
 
@@ -36,25 +35,25 @@ class SomeClass
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace Nextcloud\Rector\Test\Rector\ReplaceIConfigWithIAppConfigRector\Fixture;
+namespace Nextcloud\Rector\Test\Set\Nextcloud29\Fixture;
 
-use OCP\AppFramework\Services\IAppConfig;
+use OCP\IAppConfig;
 use OCP\IConfig;
 
 class SomeClass
 {
-    public function __construct(private IConfig $config, private IAppConfig $appConfig, private \OCP\IAppConfig $appConfig2)
+    public function __construct(private IConfig $config, private IAppConfig $appConfig)
     {
     }
 
     public function run(): void
     {
-        $this->appConfig2->getValue('myapp', 'mykey');
-        $this->appConfig2->getValue('myapp', 'mykey', 'default');
-        $this->appConfig2->getKeys('myapp');
-        $this->appConfig2->setValue('myapp', 'mykey', 'value');
-        $this->appConfig2->deleteKey('myapp', 'mykey');
-        $this->appConfig2->deleteApp('myapp');
+        $this->appConfig->getValue('myapp', 'mykey');
+        $this->appConfig->getValue('myapp', 'mykey', 'default');
+        $this->appConfig->getKeys('myapp');
+        $this->appConfig->setValue('myapp', 'mykey', 'value');
+        $this->appConfig->deleteKey('myapp', 'mykey');
+        $this->appConfig->deleteApp('myapp');
     }
 }
 
