@@ -8,20 +8,16 @@ use Nextcloud\Rector\ValueObject\ReplaceInjectedMethodCall;
 use Rector\Config\RectorConfig;
 
 return static function (RectorConfig $rectorConfig): void {
-    $rectorConfig->sets([NextcloudSets::NEXTCLOUD_27]);
+    $rectorConfig->sets([NextcloudSets::NEXTCLOUD_29]);
     $rectorConfig->ruleWithConfiguration(
         ReplaceInjectedMethodCallRector::class,
         [
             new ReplaceInjectedMethodCall(
-                'OCP\IConfig',
-                'OCP\IAppConfig',
-                'appConfig',
+                'OCP\Mail\IMailer',
+                'OCP\Mail\IEmailValidator',
+                'emailValidator',
                 [
-                    'getAppValue' => 'getValue',
-                    'getAppKeys' => 'getKeys',
-                    'setAppValue' => 'setValue',
-                    'deleteAppValue' => 'deleteKey',
-                    'deleteAppValues' => 'deleteApp',
+                    'validateMailAddress' => 'isValid',
                 ],
             ),
         ],

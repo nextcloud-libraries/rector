@@ -21,7 +21,7 @@ final class NextcloudSets
     /** @psalm-api */
     public const NEXTCLOUD_31 = self::NEXTCLOUD_30;
     /** @psalm-api */
-    public const NEXTCLOUD_32 = self::NEXTCLOUD_31;
+    public const NEXTCLOUD_32 = __DIR__ . '/../../config/nextcloud-32/nextcloud-32-deprecations.php';
     /** @psalm-api */
     public const NEXTCLOUD_33 = __DIR__ . '/../../config/nextcloud-33/nextcloud-33-deprecations.php';
     /** @psalm-api */

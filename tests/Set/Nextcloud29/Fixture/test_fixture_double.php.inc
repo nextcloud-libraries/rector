@@ -5,13 +5,14 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace Nextcloud\Rector\Test\Rector\ReplaceIConfigWithIAppConfigRector\Fixture;
+namespace Nextcloud\Rector\Test\Set\Nextcloud29\Fixture;
 
+use OCP\IAppConfig;
 use OCP\IConfig;
 
 class SomeClass
 {
-    public function __construct(private IConfig $config)
+    public function __construct(private IConfig $config, private IAppConfig $appConfig)
     {
     }
 
@@ -35,7 +36,7 @@ class SomeClass
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-namespace Nextcloud\Rector\Test\Rector\ReplaceIConfigWithIAppConfigRector\Fixture;
+namespace Nextcloud\Rector\Test\Set\Nextcloud29\Fixture;
 
 use OCP\IAppConfig;
 use OCP\IConfig;
