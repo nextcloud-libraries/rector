@@ -7,6 +7,7 @@ use Nextcloud\Rector\Rector\OcServerToOcpServerRector;
 use Nextcloud\Rector\Rector\OcpUtilAddScriptRector;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
 use Rector\Config\RectorConfig;
+use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Renaming\Rector\StaticCall\RenameStaticMethodRector;
 use Rector\Renaming\ValueObject\RenameStaticMethod;
 
@@ -205,6 +206,16 @@ return static function (RectorConfig $rectorConfig): void {
             new LegacyGetterToOcpServerGet('getStorageFactory', 'OCP\Files\Storage\IStorageFactory'),
             // Deprecated since 20.0.0
             new LegacyGetterToOcpServerGet('getGeneratorHelper', 'OC\Preview\GeneratorHelper'),
+        ],
+    );
+
+    $rectorConfig->ruleWithConfiguration(
+        RenameClassRector::class,
+        [
+            // Deprecated since 21.0.0
+            'OCP\Files\Cache\CacheInsertEvent' => 'OCP\Files\Cache\CacheEntryInsertedEvent',
+            // Deprecated since 21.0.0
+            'OCP\Files\Cache\CacheUpdateEvent' => 'OCP\Files\Cache\CacheEntryUpdatedEvent',
         ],
     );
 };
