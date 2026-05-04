@@ -60,6 +60,30 @@ return RectorConfig::configure()
 	]);
 ```
 
+### `nextcloud/ocp` dependency
+
+Some rules e.g. `->withPhpSets(php82: true)` require a reference to the OCP package.
+If you are receiving an error like the following, you are facing one of them:
+> System error: "Class "OCP\AppFramework\Db\Entity" not found
+
+The `nextcloud/rector` package comes with a version of `nextcloud/ocp`, that can be good enough,
+but it can also be outdated later. So if you have an up-to-date dependency to `nextcloud/ocp` anyway,
+it totally makes sense to link that root instead.
+Simply add the following autoload-information into the `vendor-bin/rector/composer.json` file,
+to use the internal package,
+or use paths like `../../vendor/nextcloud/ocp` to reference the OCP package from your root composer
+or `../vendor-bin/nextcloud-ocp/vendor/nextcloud/ocp` if you have it in another composer-bin:
+
+
+```json
+    "autoload": {
+        "psr-4": {
+            "OCP\\": "vendor/nextcloud/ocp/OCP/",
+            "NCU\\": "vendor/nextcloud/ocp/NCU/"
+        }
+    }
+```
+
 Make sure that you also have nextcloud/coding-standard setup and to run the code style fixer after rector to fix styling.
 
 
