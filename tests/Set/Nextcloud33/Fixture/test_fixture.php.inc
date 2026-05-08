@@ -41,7 +41,7 @@ use OCP\IConfig;
 
 class SomeClass
 {
-    public function __construct(private IConfig $config, private \OCP\IUserConfig $userConfig)
+    public function __construct(private IConfig $config, private \OCP\Config\IUserConfig $userConfig)
     {
     }
 

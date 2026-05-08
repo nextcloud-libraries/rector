@@ -18,7 +18,7 @@ return static function (RectorConfig $rectorConfig): void {
         [
             new ReplaceInjectedMethodCall(
                 'OCP\IConfig',
-                'OCP\IUserConfig',
+                'OCP\Config\IUserConfig',
                 'userConfig',
                 [
                     'getAllUserValues' => 'getAllValues',

@@ -8,7 +8,7 @@
 namespace Nextcloud\Rector\Test\Set\Nextcloud33\Fixture;
 
 use OCP\IConfig;
-use OCP\IUserConfig;
+use OCP\Config\IUserConfig;
 
 class SomeClass
 {
@@ -39,7 +39,7 @@ class SomeClass
 namespace Nextcloud\Rector\Test\Set\Nextcloud33\Fixture;
 
 use OCP\IConfig;
-use OCP\IUserConfig;
+use OCP\Config\IUserConfig;
 
 class SomeClass
 {
