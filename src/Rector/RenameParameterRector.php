@@ -30,6 +30,7 @@ use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function count;
 use function is_array;
+use function str_contains;
 
 /** @psalm-suppress PropertyNotSetInConstructor */
 final class RenameParameterRector extends AbstractRector implements ConfigurableRectorInterface
@@ -85,15 +86,36 @@ final class RenameParameterRector extends AbstractRector implements Configurable
             return null;
         }
 
+        // Get the class name - can be a string or Identifier node
+        $className = $node->name instanceof Node
+            ? ($node->name->name ?? '')
+            : ($node->name ?? '');
+
         $classReflection = $this->reflectionResolver->resolveClassReflection($node);
-        if ($classReflection === null) {
-            return null;
+
+        $shouldProcess = false;
+
+        // If reflection succeeds, verify the class is a Controller or Settings
+        if ($classReflection !== null) {
+            $extendsController = $classReflection->is('OCP\AppFramework\Controller');
+            $implementsSettingsInterface = $classReflection->implementsInterface('OCP\Settings\ISettings');
+
+            if ($extendsController || $implementsSettingsInterface) {
+                $shouldProcess = true;
+            }
         }
 
-        $extendsController = $classReflection->is('OCP\AppFramework\Controller');
-        $implementsSettingsInterface = $classReflection->implementsInterface('OCP\Settings\ISettings');
+        // If reflection failed or didn't match, use class name as fallback heuristic
+        // This allows the rule to work when analyzing apps in isolation where
+        // Nextcloud core classes aren't available or don't have parent classes declared
+        if (!$shouldProcess) {
+            // Only process if class name contains 'Controller' or 'Settings'
+            if (str_contains($className, 'Controller') || str_contains($className, 'Settings')) {
+                $shouldProcess = true;
+            }
+        }
 
-        if (!$extendsController && !$implementsSettingsInterface) {
+        if (!$shouldProcess) {
             return null;
         }
 
