@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Nextcloud\Rector\Rector\TypeLookupNameToGetNameRector;
 use Nextcloud\Rector\Set\NextcloudSets;
 use Rector\Config\RectorConfig;
 use Rector\Renaming\Rector\ClassConstFetch\RenameClassConstFetchRector;
@@ -10,6 +11,15 @@ use Rector\Renaming\ValueObject\RenameClassAndConstFetch;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([NextcloudSets::NEXTCLOUD_34]);
+    $rectorConfig->rule(TypeLookupNameToGetNameRector::class);
+    $rectorConfig->skip([
+        // These are the server-internal classes implementing the OCP\DB\Schema wrapper itself,
+        // they still work with the raw Doctrine\DBAL\Types\Type and must not be rewritten.
+        TypeLookupNameToGetNameRector::class => [
+            'lib/private/DB/MigrationService.php',
+            'lib/private/DB/Schema/Column.php',
+        ],
+    ]);
     $rectorConfig->ruleWithConfiguration(
         RenameClassRector::class,
         [
