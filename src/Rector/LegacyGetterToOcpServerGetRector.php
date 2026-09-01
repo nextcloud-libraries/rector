@@ -106,14 +106,13 @@ CODE_SAMPLE
     #[Override]
     public function configure(array $configuration): void
     {
+        $legacyGetterToOcpServerGet = [];
         foreach ($configuration as $config) {
             if (!$config instanceof LegacyGetterToOcpServerGet) {
                 throw new InvalidArgumentException('Only supports LegacyGetterToOcpServerGet configurations');
             }
+            $legacyGetterToOcpServerGet[] = $config;
         }
-        /**
-         * @psalm-suppress MixedPropertyTypeCoercion
-         */
-        $this->legacyGetterToOcpServerGet = $configuration;
+        $this->legacyGetterToOcpServerGet = $legacyGetterToOcpServerGet;
     }
 }
