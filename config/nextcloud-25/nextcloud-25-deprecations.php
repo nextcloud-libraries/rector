@@ -6,6 +6,8 @@ use Nextcloud\Rector\Rector\LegacyGetterToOcpServerGetRector;
 use Nextcloud\Rector\Rector\OcServerToOcpServerRector;
 use Nextcloud\Rector\Rector\OcpUtilAddScriptRector;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
+use Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector;
+use Rector\CodingStyle\Rector\FuncCall\StrictInArrayRector;
 use Rector\Config\RectorConfig;
 use Rector\Renaming\Rector\Name\RenameClassRector;
 use Rector\Renaming\Rector\StaticCall\RenameStaticMethodRector;
@@ -15,6 +17,8 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rules([
         OcServerToOcpServerRector::class,
         OcpUtilAddScriptRector::class,
+        StrictInArrayRector::class,
+        UseIdenticalOverEqualWithSameTypeRector::class,
     ]);
 
     $rectorConfig->ruleWithConfiguration(RenameStaticMethodRector::class, [
