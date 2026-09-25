@@ -42,27 +42,10 @@ final class TestCaseAutoMockRefactorRector extends AbstractRector
     public function getRuleDefinition(): RuleDefinition
     {
         return new RuleDefinition(
-            'Migrate test cases to new createInstanceWithMock method',
+            'Migrate test cases to new createInstanceWithMocks method',
             [
                 new ConfiguredCodeSample(
                     <<<'CODE_SAMPLE'
-<?php
-
-declare(strict_types=1);
-
-/**
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: AGPL-3.0-or-later
- */
-
-namespace OCA\Comments\Tests\Unit\Collaboration;
-
-use OCA\Comments\Collaboration\CommentersSorter;
-use OCP\Comments\IComment;
-use OCP\Comments\ICommentsManager;
-use PHPUnit\Framework\MockObject\MockObject;
-use Test\TestCase;
-
 class CommentersSorterTest extends TestCase {
 	protected ICommentsManager&MockObject $commentsManager;
 	protected CommentersSorter $sorter;
@@ -76,64 +59,34 @@ class CommentersSorterTest extends TestCase {
 		$this->sorter = new CommentersSorter($this->commentsManager);
 	}
 
-	#[\PHPUnit\Framework\Attributes\DataProvider(methodName: 'sortDataProvider')]
-	public function testSort($data): void {
+	public function testSort(): void {
 		$this->commentsManager->expects($this->once())
 			->method('getForObject')
 			->willReturn([]);
 
-		$workArray = $data['input'];
-		$this->sorter->sort($workArray, ['itemType' => 'files', 'itemId' => '24']);
-
-		$this->assertEquals($data['expected'], $workArray);
+		$this->assertEquals(true, $this->sorter->testedMethod());
 	}
 }
-
 CODE_SAMPLE,
                     <<<'CODE_SAMPLE'
-<?php
-
-declare(strict_types=1);
-
-/**
- * SPDX-FileCopyrightText: 2017 Nextcloud GmbH and Nextcloud contributors
- * SPDX-License-Identifier: AGPL-3.0-or-later
- */
-
-namespace OCA\Comments\Tests\Unit\Collaboration;
-
-use OCA\Comments\Collaboration\CommentersSorter;
-use OCP\Comments\IComment;
-use OCP\Comments\ICommentsManager;
-use PHPUnit\Framework\MockObject\MockObject;
-use Test\TestCase;
-
 class CommentersSorterTest extends TestCase {
-	protected ICommentsManager&MockObject $commentsManager;
 	protected CommentersSorter $sorter;
 
 	#[\Override]
 	protected function setUp(): void {
 		parent::setUp();
 
-		$this->commentsManager = $this->createMock(ICommentsManager::class);
-
-		$this->sorter = new CommentersSorter($this->commentsManager);
+		$this->sorter = $this->createInstanceWithMocks(CommentersSorter::class);
 	}
 
-	#[\PHPUnit\Framework\Attributes\DataProvider(methodName: 'sortDataProvider')]
-	public function testSort($data): void {
-		$this->commentsManager->expects($this->once())
+	public function testSort(): void {
+		$this->mocks[ICommentsManager::class]->expects($this->once())
 			->method('getForObject')
 			->willReturn([]);
 
-		$workArray = $data['input'];
-		$this->sorter->sort($workArray, ['itemType' => 'files', 'itemId' => '24']);
-
-		$this->assertEquals($data['expected'], $workArray);
+		$this->assertEquals(true, $this->sorter->testedMethod());
 	}
 }
-
 CODE_SAMPLE
                     ,
                     [
