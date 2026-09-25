@@ -31,9 +31,7 @@ use Rector\Rector\AbstractRector;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
-use function array_combine;
 use function array_keys;
-use function array_map;
 use function count;
 use function in_array;
 use function iterator_to_array;
@@ -216,25 +214,27 @@ CODE_SAMPLE
             $node,
             array_keys($mockedServices),
         );
-        $mockAssignments = array_combine(
-            array_map(
-                fn (Expression $node): string => $node->expr->var->name->name,
-                $mockAssignments,
-            ),
-            $mockAssignments,
-        );
+        $constFetchMap = [];
+        foreach ($mockAssignments as $mockAssignment) {
+            if (
+                $mockAssignment->expr instanceof Assign
+                && $mockAssignment->expr->var instanceof PropertyFetch
+                && $mockAssignment->expr->var->name instanceof Node\Identifier
+                && $mockAssignment->expr->expr instanceof MethodCall
+                && $mockAssignment->expr->expr->args[0] instanceof Arg
+                && $mockAssignment->expr->expr->args[0]->value instanceof ClassConstFetch
+            ) {
+                $constFetchMap[$mockAssignment->expr->var->name->name] = $mockAssignment->expr->expr->args[0]->value;
+            }
+        }
         $this->replaceMethodCallsToMocks(
             $node,
-            $mockAssignments,
+            $constFetchMap,
         );
 
         return $node;
     }
 
-    /**
-     * @psalm-suppress MoreSpecificReturnType
-     * @psalm-suppress LessSpecificReturnStatement
-     */
     private function collectConstructorCall(ClassMethod $setupMethod): ?Node\Expr\New_
     {
         $stmts = $setupMethod->getStmts();
@@ -243,7 +243,9 @@ CODE_SAMPLE
             return null;
         }
 
-        // Find first class that has name $name
+        /**
+         * @var ?Node\Expr\New_
+         */
         return $nodeFinder->findFirst($stmts, fn (Node $node) => $node instanceof Node\Expr\New_);
     }
 
@@ -276,8 +278,6 @@ CODE_SAMPLE
      * @param array<string, PropertyFetch> $constructorArgs
      *
      * @return list<Expression>
-     *
-     * @psalm-suppress LessSpecificReturnStatement
      */
     private function collectMockAssignments(ClassMethod $setupMethod, array $constructorArgs): array
     {
@@ -287,7 +287,10 @@ CODE_SAMPLE
             return [];
         }
 
-        return $nodeFinder->find($stmts, fn (Node $node) => $node instanceof Expression
+        /**
+         * @var list<Expression> $exprs
+         */
+        $exprs = $nodeFinder->find($stmts, fn (Node $node) => $node instanceof Expression
                 && $node->expr instanceof Assign
                 && $node->expr->var instanceof PropertyFetch
                 && $node->expr->var->var instanceof Variable
@@ -299,12 +302,13 @@ CODE_SAMPLE
                 && $node->expr->expr->name->name === 'createMock'
                 && $node->expr->var->name instanceof Node\Identifier
                 && isset($constructorArgs[$node->expr->var->name->name]));
+
+        return $exprs;
     }
 
     private function replaceStatement(ClassMethod $node, Node $search, Node $replace): void
     {
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor(new class ($search, $replace) extends NodeVisitorAbstract {
+        $this->traverseWithVisitor($node, new class ($search, $replace) extends NodeVisitorAbstract {
             public function __construct(
                 private Node $search,
                 private Node $replace,
@@ -320,10 +324,6 @@ CODE_SAMPLE
                 return null;
             }
         });
-
-        if ($node->stmts !== null) {
-            $node->stmts = $traverser->traverse($node->stmts);
-        }
     }
 
     /**
@@ -331,8 +331,7 @@ CODE_SAMPLE
      */
     private function removeStatements(ClassMethod $node, array $toRemove): void
     {
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor(new class ($toRemove) extends NodeVisitorAbstract {
+        $this->traverseWithVisitor($node, new class ($toRemove) extends NodeVisitorAbstract {
             /**
             * @param list<Node> $toRemove
             */
@@ -344,14 +343,12 @@ CODE_SAMPLE
             public function leaveNode(Node $node): ?int
             {
                 if (in_array($node, $this->toRemove, true)) {
-                    return NodeVisitor::REMOVE_NODE;
+                    return NodeTraverser::REMOVE_NODE;
                 }
 
                 return null;
             }
         });
-
-        $node->stmts = $traverser->traverse($node->stmts);
     }
 
     /**
@@ -359,8 +356,7 @@ CODE_SAMPLE
      */
     private function removePropertiesByName(Class_ $node, array $toRemove): void
     {
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor(new class ($toRemove) extends NodeVisitorAbstract {
+        $this->traverseWithVisitor($node, new class ($toRemove) extends NodeVisitorAbstract {
             /**
             * @param list<string> $toRemove
             */
@@ -372,25 +368,22 @@ CODE_SAMPLE
             public function leaveNode(Node $node): ?int
             {
                 if ($node instanceof Property && in_array($node->props[0]->name->name, $this->toRemove, true)) {
-                    return NodeVisitor::REMOVE_NODE;
+                    return NodeTraverser::REMOVE_NODE;
                 }
 
                 return null;
             }
         });
-
-        $node->stmts = $traverser->traverse($node->stmts);
     }
 
     /**
-     * @param array<string, Expression> $mocks
+     * @param array<string, ClassConstFetch> $mocks
      */
     private function replaceMethodCallsToMocks(Class_ $node, array $mocks): void
     {
-        $traverser = new NodeTraverser();
-        $traverser->addVisitor(new class ($mocks) extends NodeVisitorAbstract {
+        $this->traverseWithVisitor($node, new class ($mocks) extends NodeVisitorAbstract {
             /**
-            * @param array<string, Expression> $mocks
+            * @param array<string, ClassConstFetch> $mocks
             */
             public function __construct(
                 private array $mocks,
@@ -405,10 +398,6 @@ CODE_SAMPLE
                     && $node->var->name === 'this'
                     && $node->name instanceof Node\Identifier
                     && isset($this->mocks[$node->name->name])
-                    && $this->mocks[$node->name->name]->expr instanceof Assign
-                    && $this->mocks[$node->name->name]->expr->expr instanceof MethodCall
-                    && $this->mocks[$node->name->name]->expr->expr->args[0] instanceof Arg
-                    && ($this->mocks[$node->name->name]->expr->expr->args[0]->value instanceof ClassConstFetch)
                 ) {
                     return new ArrayDimFetch(
                         new PropertyFetch(
@@ -416,14 +405,25 @@ CODE_SAMPLE
                             'mocks',
                         ),
                         // We reuse the ClassConstFetch from the createMock args
-                        $this->mocks[$node->name->name]->expr->expr->args[0]->value,
+                        $this->mocks[$node->name->name],
                     );
                 }
 
                 return null;
             }
         });
+    }
 
-        $node->stmts = $traverser->traverse($node->stmts);
+    private function traverseWithVisitor(Class_ | ClassMethod $node, NodeVisitor $visitor): void
+    {
+        if ($node->stmts === null) {
+            return;
+        }
+        $traverser = new NodeTraverser();
+        $traverser->addVisitor($visitor);
+
+        /** @var list<Node\Stmt> $newStmts */
+        $newStmts = $traverser->traverse($node->stmts);
+        $node->stmts = $newStmts;
     }
 }
