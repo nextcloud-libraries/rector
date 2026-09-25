@@ -24,6 +24,9 @@ class CommentersSorterTest extends TestCase {
 		parent::setUp();
 
 		$this->commentsManager = $this->createMock(ICommentsManager::class);
+		$this->commentsManager->method('m')
+			->expects($this->any())
+			->willReturn(true);
 
 		$this->sorter = new CommentersSorter($this->commentsManager);
 	}
@@ -71,6 +74,9 @@ class CommentersSorterTest extends TestCase {
 		parent::setUp();
 
 		$this->sorter = $this->createInstanceWithMocks(CommentersSorter::class);
+        $this->mocks[ICommentsManager::class]->method('m')
+			->expects($this->any())
+			->willReturn(true);
 	}
 
 	/**

@@ -32,6 +32,7 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function array_keys;
+use function array_splice;
 use function count;
 use function in_array;
 use function iterator_to_array;
@@ -118,6 +119,11 @@ CODE_SAMPLE
             return null;
         }
 
+        if (!isset($node->extends) || ((string) $node->extends !== 'Test\TestCase')) {
+            // Not extending Nextcloud TestCase, skip
+            return null;
+        }
+
         $setupMethod = $node->getMethod('setUp');
         if (!$setupMethod instanceof ClassMethod) {
             return null;
@@ -184,6 +190,7 @@ CODE_SAMPLE
             $node,
             $constFetchMap,
         );
+        $this->reorderSetupStatements($setupMethod);
 
         return $node;
     }
@@ -378,5 +385,59 @@ CODE_SAMPLE
         /** @var list<Node\Stmt> $newStmts */
         $newStmts = $traverser->traverse($node->stmts);
         $node->stmts = $newStmts;
+    }
+
+    private function reorderSetupStatements(ClassMethod $setupMethod): void
+    {
+        /**
+         * @var list<Node\Stmt>|null $stmts
+         */
+        $stmts = $setupMethod->getStmts();
+        $nodeFinder = new NodeFinder();
+        if ($stmts === null) {
+            return;
+        }
+
+        $firstMockUse = -1;
+        $firstCreateUse = -1;
+        foreach ($stmts as $key => $stmt) {
+            if ($firstMockUse < 0) {
+                // Search in subnodes
+                $mockArrayUse = $nodeFinder->findFirst(
+                    $stmt,
+                    fn (Node $node) => $node instanceof ArrayDimFetch
+                    && $node->var instanceof PropertyFetch
+                    && $node->var->var instanceof Variable
+                    && $node->var->var->name === 'this'
+                    && $node->var->name instanceof Node\Identifier
+                    && $node->var->name->name === 'mocks',
+                );
+                if ($mockArrayUse !== null) {
+                    $firstMockUse = $key;
+                }
+            }
+            if ($firstCreateUse < 0) {
+                // Search in subnodes
+                $createUse = $nodeFinder->findFirst(
+                    $stmt,
+                    fn (Node $node) => $node instanceof MethodCall
+                        && $node->name instanceof Node\Identifier
+                        && $node->name->name === 'createInstanceWithMocks'
+                        && $node->var instanceof Variable
+                        && $node->var->name === 'this',
+                );
+                if ($createUse !== null) {
+                    $firstCreateUse = $key;
+                }
+            }
+        }
+        if ($firstCreateUse < 0 || $firstMockUse < 0 || $firstCreateUse < $firstMockUse) {
+            // No reorder needed
+            return;
+        }
+        // Remove create
+        $create = array_splice($stmts, $firstCreateUse, 1);
+        array_splice($stmts, $firstMockUse, 0, $create);
+        $setupMethod->stmts = $stmts;
     }
 }
