@@ -13,7 +13,6 @@ use Generator;
 use Override;
 use PhpParser\Node;
 use PhpParser\Node\Arg;
-use PhpParser\Node\Expr\ArrayDimFetch;
 use PhpParser\Node\Expr\Assign;
 use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\MethodCall;
@@ -32,7 +31,6 @@ use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
 
 use function array_keys;
-use function array_splice;
 use function count;
 use function in_array;
 use function iterator_to_array;
@@ -81,7 +79,7 @@ class CommentersSorterTest extends TestCase {
 	}
 
 	public function testSort(): void {
-		$this->mocks[ICommentsManager::class]->expects($this->once())
+		$this->getAutoMock(ICommentsManager::class)->expects($this->once())
 			->method('getForObject')
 			->willReturn([]);
 
@@ -190,7 +188,6 @@ CODE_SAMPLE
             $node,
             $constFetchMap,
         );
-        $this->reorderSetupStatements($setupMethod);
 
         return $node;
     }
@@ -359,13 +356,13 @@ CODE_SAMPLE
                     && $node->name instanceof Node\Identifier
                     && isset($this->mocks[$node->name->name])
                 ) {
-                    return new ArrayDimFetch(
-                        new PropertyFetch(
-                            new Variable('this'),
-                            'mocks',
-                        ),
+                    return new MethodCall(
+                        new Variable('this'),
+                        'getAutoMock',
                         // We reuse the ClassConstFetch from the createMock args
-                        $this->mocks[$node->name->name],
+                        [
+                            new Arg($this->mocks[$node->name->name]),
+                        ],
                     );
                 }
 
@@ -385,59 +382,5 @@ CODE_SAMPLE
         /** @var list<Node\Stmt> $newStmts */
         $newStmts = $traverser->traverse($node->stmts);
         $node->stmts = $newStmts;
-    }
-
-    private function reorderSetupStatements(ClassMethod $setupMethod): void
-    {
-        /**
-         * @var list<Node\Stmt>|null $stmts
-         */
-        $stmts = $setupMethod->getStmts();
-        $nodeFinder = new NodeFinder();
-        if ($stmts === null) {
-            return;
-        }
-
-        $firstMockUse = -1;
-        $firstCreateUse = -1;
-        foreach ($stmts as $key => $stmt) {
-            if ($firstMockUse < 0) {
-                // Search in subnodes
-                $mockArrayUse = $nodeFinder->findFirst(
-                    $stmt,
-                    fn (Node $node) => $node instanceof ArrayDimFetch
-                    && $node->var instanceof PropertyFetch
-                    && $node->var->var instanceof Variable
-                    && $node->var->var->name === 'this'
-                    && $node->var->name instanceof Node\Identifier
-                    && $node->var->name->name === 'mocks',
-                );
-                if ($mockArrayUse !== null) {
-                    $firstMockUse = $key;
-                }
-            }
-            if ($firstCreateUse < 0) {
-                // Search in subnodes
-                $createUse = $nodeFinder->findFirst(
-                    $stmt,
-                    fn (Node $node) => $node instanceof MethodCall
-                        && $node->name instanceof Node\Identifier
-                        && $node->name->name === 'createInstanceWithMocks'
-                        && $node->var instanceof Variable
-                        && $node->var->name === 'this',
-                );
-                if ($createUse !== null) {
-                    $firstCreateUse = $key;
-                }
-            }
-        }
-        if ($firstCreateUse < 0 || $firstMockUse < 0 || $firstCreateUse < $firstMockUse) {
-            // No reorder needed
-            return;
-        }
-        // Remove create
-        $create = array_splice($stmts, $firstCreateUse, 1);
-        array_splice($stmts, $firstMockUse, 0, $create);
-        $setupMethod->stmts = $stmts;
     }
 }

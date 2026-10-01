@@ -22,7 +22,6 @@ class CommentersSorterTest extends TestCase {
 	#[\Override]
 	protected function setUp(): void {
 		parent::setUp();
-
 		$this->commentsManager = $this->createMock(ICommentsManager::class);
 		$this->commentsManager->method('m')
 			->expects($this->any())
@@ -72,11 +71,11 @@ class CommentersSorterTest extends TestCase {
 	#[\Override]
 	protected function setUp(): void {
 		parent::setUp();
-
-		$this->sorter = $this->createInstanceWithMocks(CommentersSorter::class);
-        $this->mocks[ICommentsManager::class]->method('m')
+		$this->getAutoMock(ICommentsManager::class)->method('m')
 			->expects($this->any())
 			->willReturn(true);
+
+		$this->sorter = $this->createInstanceWithMocks(CommentersSorter::class);
 	}
 
 	/**
@@ -84,7 +83,7 @@ class CommentersSorterTest extends TestCase {
 	 */
 	#[\PHPUnit\Framework\Attributes\DataProvider(methodName: 'sortDataProvider')]
 	public function testSort($data): void {
-		$this->mocks[ICommentsManager::class]->expects($this->once())
+		$this->getAutoMock(ICommentsManager::class)->expects($this->once())
 			->method('getForObject')
 			->willReturn([]);
 
