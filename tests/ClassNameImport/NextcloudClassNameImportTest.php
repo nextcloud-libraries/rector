@@ -11,24 +11,26 @@ namespace Nextcloud\Rector\Test\ClassNameImport;
 
 use Iterator;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 
+#[RunTestsInSeparateProcesses]
 final class NextcloudClassNameImportTest extends AbstractRectorTestCase
 {
-    #[DataProvider('provideData')]
-    public function test(string $filePath): void
-    {
-        $this->doTestFile($filePath);
-    }
-
     /**
      * @param string[] $configFiles
      */
     protected function bootFromConfigFiles(array $configFiles): void
     {
         /* Did not find a cleaner way to make sure the registered service is taken into account */
-        self::getContainer()->forgetInstances();
+        self::$rectorConfig = null;
         parent::bootFromConfigFiles($configFiles);
+    }
+
+    #[DataProvider('provideData')]
+    public function test(string $filePath): void
+    {
+        $this->doTestFile($filePath);
     }
 
     public static function provideData(): Iterator

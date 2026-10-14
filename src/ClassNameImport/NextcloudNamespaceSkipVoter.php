@@ -23,7 +23,7 @@ use function str_starts_with;
  *
  * To use it:
  * $config = RectorConfig::configure()[…]->withImportNames(importShortClasses:false);
- * $config->registerService(NextcloudNamespaceSkipVoter::class, tag:ClassNameImportSkipVoterInterface::class);
+ * $config->registerService(NextcloudNamespaceSkipVoter::class);
  */
 final class NextcloudNamespaceSkipVoter implements ClassNameImportSkipVoterInterface
 {
