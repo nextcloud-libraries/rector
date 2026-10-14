@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "003dfeea72ab9d1465d8670205819f73",
+    "content-hash": "12aa2b1e197220d697aaa37eaa12600b",
     "packages": [
         {
             "name": "nextcloud/ocp",
