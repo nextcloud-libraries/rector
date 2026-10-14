@@ -272,6 +272,7 @@ CODE_SAMPLE
             ) {
             }
 
+            #[Override]
             public function leaveNode(Node $node): ?Node
             {
                 if ($node === $this->search) {
@@ -297,10 +298,11 @@ CODE_SAMPLE
             ) {
             }
 
+            #[Override]
             public function leaveNode(Node $node): ?int
             {
                 if (in_array($node, $this->toRemove, true)) {
-                    return NodeTraverser::REMOVE_NODE;
+                    return NodeVisitor::REMOVE_NODE;
                 }
 
                 return null;
@@ -322,10 +324,11 @@ CODE_SAMPLE
             ) {
             }
 
+            #[Override]
             public function leaveNode(Node $node): ?int
             {
                 if ($node instanceof Property && in_array($node->props[0]->name->name, $this->toRemove, true)) {
-                    return NodeTraverser::REMOVE_NODE;
+                    return NodeVisitor::REMOVE_NODE;
                 }
 
                 return null;
@@ -347,6 +350,7 @@ CODE_SAMPLE
             ) {
             }
 
+            #[Override]
             public function leaveNode(Node $node): ?Node
             {
                 if (
