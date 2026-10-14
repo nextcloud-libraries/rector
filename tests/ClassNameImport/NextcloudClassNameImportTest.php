@@ -10,7 +10,6 @@ declare(strict_types=1);
 namespace Nextcloud\Rector\Test\ClassNameImport;
 
 use Iterator;
-use Nextcloud\Rector\ClassNameImport\NextcloudNamespaceSkipVoter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use Rector\Testing\PHPUnit\AbstractRectorTestCase;
@@ -18,11 +17,14 @@ use Rector\Testing\PHPUnit\AbstractRectorTestCase;
 #[RunTestsInSeparateProcesses]
 final class NextcloudClassNameImportTest extends AbstractRectorTestCase
 {
-    protected function setUp(): void
+    /**
+     * @param string[] $configFiles
+     */
+    protected function bootFromConfigFiles(array $configFiles): void
     {
-        /* The skip voters are injected when the ClassNameImportSkipper is first built, which happens before the config file is loaded */
-        self::getContainer()->singleton(NextcloudNamespaceSkipVoter::class);
-        parent::setUp();
+        /* Did not find a cleaner way to make sure the registered service is taken into account */
+        self::$rectorConfig = null;
+        parent::bootFromConfigFiles($configFiles);
     }
 
     #[DataProvider('provideData')]

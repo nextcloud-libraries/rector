@@ -113,7 +113,6 @@ CODE_SAMPLE
         }
         /**
          * @psalm-suppress MixedPropertyTypeCoercion
-         * @phpstan-ignore assign.propertyType
          */
         $this->legacyGetterToOcpServerGet = $configuration;
     }
