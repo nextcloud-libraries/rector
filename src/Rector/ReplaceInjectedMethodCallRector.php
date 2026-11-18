@@ -31,7 +31,7 @@ use Rector\Contract\Rector\ConfigurableRectorInterface;
 use Rector\Exception\Configuration\InvalidConfigurationException;
 use Rector\Rector\AbstractRector;
 use Rector\ValueObject\MethodName;
-use Rector\ValueObject\PhpVersionFeature;
+use Rector\ValueObject\PhpVersion;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -199,12 +199,12 @@ CODE_SAMPLE
     }
 
     /**
-     * @return PhpVersionFeature::PROPERTY_PROMOTION
+     * @return PhpVersion::PHP_80
      */
     #[Override]
     public function provideMinPhpVersion(): int
     {
-        return PhpVersionFeature::PROPERTY_PROMOTION;
+        return PhpVersion::PHP_80;
     }
 
     /**
