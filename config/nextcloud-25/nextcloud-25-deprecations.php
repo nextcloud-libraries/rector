@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Nextcloud\Rector\Rector\LegacyGetterToOcpServerGetRector;
+use Nextcloud\Rector\Rector\OcHelperToOcpUtilRector;
 use Nextcloud\Rector\Rector\OcServerToOcpServerRector;
 use Nextcloud\Rector\Rector\OcpUtilAddScriptRector;
 use Nextcloud\Rector\ValueObject\LegacyGetterToOcpServerGet;
@@ -10,22 +11,14 @@ use Rector\CodeQuality\Rector\Equal\UseIdenticalOverEqualWithSameTypeRector;
 use Rector\CodingStyle\Rector\FuncCall\StrictInArrayRector;
 use Rector\Config\RectorConfig;
 use Rector\Renaming\Rector\Name\RenameClassRector;
-use Rector\Renaming\Rector\StaticCall\RenameStaticMethodRector;
-use Rector\Renaming\ValueObject\RenameStaticMethod;
 
 return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->rules([
+        OcHelperToOcpUtilRector::class,
         OcServerToOcpServerRector::class,
         OcpUtilAddScriptRector::class,
         StrictInArrayRector::class,
         UseIdenticalOverEqualWithSameTypeRector::class,
-    ]);
-
-    $rectorConfig->ruleWithConfiguration(RenameStaticMethodRector::class, [
-        // Deprecated since 4.0.0
-        new RenameStaticMethod('OC_Helper', 'computerFileSize', 'OCP\Util', 'computerFileSize'),
-        // Deprecated since 4.0.0
-        new RenameStaticMethod('OC_Helper', 'humanFileSize', 'OCP\Util', 'humanFileSize'),
     ]);
 
     $rectorConfig->ruleWithConfiguration(

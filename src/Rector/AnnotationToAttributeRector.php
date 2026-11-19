@@ -11,6 +11,7 @@ namespace Nextcloud\Rector\Rector;
 
 use Override;
 use PHPStan\PhpDocParser\Ast\Node as DocNode;
+use PHPStan\PhpDocParser\Ast\NodeTraverser;
 use PHPStan\PhpDocParser\Ast\PhpDoc\GenericTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
@@ -42,9 +43,9 @@ use Rector\Php80\ValueObject\AnnotationToAttribute;
 use Rector\Php80\ValueObject\AttributeValueAndDocComment;
 use Rector\Php80\ValueObject\DoctrineTagAndAnnotationToAttribute;
 use Rector\PhpAttribute\NodeFactory\PhpAttributeGroupFactory;
-use Rector\PhpDocParser\PhpDocParser\PhpDocNodeTraverser;
+use Rector\PhpDocParser\PhpDocParser\PhpDocNodeVisitor\CallablePhpDocNodeVisitor;
 use Rector\Rector\AbstractRector;
-use Rector\ValueObject\PhpVersionFeature;
+use Rector\ValueObject\PhpVersion;
 use Rector\VersionBonding\Contract\MinPhpVersionInterface;
 use Symplify\RuleDocGenerator\ValueObject\CodeSample\ConfiguredCodeSample;
 use Symplify\RuleDocGenerator\ValueObject\RuleDefinition;
@@ -166,12 +167,12 @@ CODE_SAMPLE
     }
 
     /**
-     * @return PhpVersionFeature::ATTRIBUTES
+     * @return PhpVersion::PHP_80
      */
     #[Override]
     public function provideMinPhpVersion(): int
     {
-        return PhpVersionFeature::ATTRIBUTES;
+        return PhpVersion::PHP_80;
     }
 
     /**
@@ -180,10 +181,7 @@ CODE_SAMPLE
     private function processGenericTags(PhpDocInfo $phpDocInfo): array
     {
         $attributeGroups = [];
-        $phpDocNodeTraverser = new PhpDocNodeTraverser();
-        $phpDocNodeTraverser->traverseWithCallable(
-            $phpDocInfo->getPhpDocNode(),
-            '',
+        $phpDocNodeVisitor = new CallablePhpDocNodeVisitor(
             function (DocNode $docNode) use (&$attributeGroups) {
                 if (!$docNode instanceof PhpDocTagNode) {
                     return null;
@@ -225,12 +223,14 @@ CODE_SAMPLE
                         return new PhpDocTextNode($attributeValueAndDocComment->docComment);
                     }
 
-                    return PhpDocNodeTraverser::NODE_REMOVE;
+                    return NodeTraverser::REMOVE_NODE;
                 }
 
                 return null;
             },
         );
+        $phpDocNodeTraverser = new NodeTraverser([$phpDocNodeVisitor]);
+        $phpDocNodeTraverser->traverse([$phpDocInfo->getPhpDocNode()]);
 
         return $attributeGroups;
     }
