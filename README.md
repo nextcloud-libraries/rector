@@ -86,6 +86,26 @@ or `../vendor-bin/nextcloud-ocp/vendor/nextcloud/ocp` if you have it in another 
 
 Make sure that you also have nextcloud/coding-standard setup and to run the code style fixer after rector to fix styling.
 
+### Importing class names
+
+Rector's `withImportNames()` imports class names from all namespaces.
+To only import names from the Nextcloud namespaces (`OC`, `OCA` and `OCP`), use the `ImportNextcloudNamesRector` rule instead.
+It also keeps generic short names like `IManager`, `IProvider` or `Plugin` fully qualified, so they stay readable:
+
+``` php
+use Nextcloud\Rector\Rector\ImportNextcloudNamesRector;
+
+return RectorConfig::configure()
+	// …
+	// Only remove unused imports, the rule below does the importing
+	->withImportNames(importNames: false, importDocBlockNames: false, removeUnusedImports: true)
+	->withRules([
+		ImportNextcloudNamesRector::class,
+	]);
+```
+
+Do not enable `importNames` or `importDocBlockNames` together with this rule, as that would import names from all namespaces again.
+
 
 ## Contributing
 
