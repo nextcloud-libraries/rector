@@ -47,9 +47,6 @@
             "ramsey/composer-repl": true,
             "ramsey/devtools": true
         },
-        "platform": {
-            "php": "8.2.35"
-        },
         "sort-packages": true
     },
     "extra": {

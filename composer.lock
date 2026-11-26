@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "80e9ca7ec883b40140924e075875b317",
+    "content-hash": "8a79972c14417d4ec347e147a7e7bb58",
     "packages": [
         {
             "name": "nextcloud/ocp",
@@ -11980,8 +11980,5 @@
         "php": "^8.2"
     },
     "platform-dev": {},
-    "platform-overrides": {
-        "php": "8.2.35"
-    },
     "plugin-api-version": "2.9.0"
 }
